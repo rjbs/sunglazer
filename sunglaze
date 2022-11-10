@@ -1,0 +1,43 @@
+#!perl
+use v5.36.0;
+use Text::SlackEmoji;
+use utf8;
+
+binmode *STDOUT, ':encoding(UTF-8)';
+
+say <<'END';
+<style type='text/css'>
+  div#main {
+    max-width: 50em;
+    margin-left: auto;
+    margin-right: auto;
+    whitespace: nowrap;
+  }
+  span { font-size: 200% }
+</style>
+END
+
+# use App::Uni;
+# my @chars = (
+#   @{ App::Uni::chars_by_name(['FACE']) },
+#   @{ App::Uni::chars_by_name(['MAN']) },
+#   @{ App::Uni::chars_by_name(['PERSON']) },
+#   @{ App::Uni::chars_by_name(['WOMAN']) },
+#   @{ App::Uni::chars_by_name(['SOUP']) },
+# );
+
+my %emoji = Text::SlackEmoji->emoji_map->%*;
+
+say '<div id="main">';
+
+for my $name (sort keys %emoji) {
+  # next unless $char =~ /\p{Emoji}/;
+  say <<~"END"
+  <div style='display:inline' title='$name'>
+    <span>$emoji{$name}</span>
+    <span style='position:relative; left:-1.125em; top: -0.1em'>🕶</span>
+  </div>
+  END
+}
+
+say '</div>';
